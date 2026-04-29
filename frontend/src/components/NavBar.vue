@@ -53,7 +53,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item v-if="authStore.isAdmin" command="admin">
                   <el-icon><Setting /></el-icon>
-                  商品管理
+                  管理后台
                 </el-dropdown-item>
                 <el-dropdown-item divided command="logout">
                   <el-icon><SwitchButton /></el-icon>
@@ -147,7 +147,7 @@ function handleUserCommand(command) {
       router.push('/order')
       break
     case 'admin':
-      router.push('/admin/products')
+      router.push('/admin/dashboard')
       break
     case 'logout':
       authStore.logout()

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import AdminLayout from '@/views/admin/AdminLayout.vue'
 
 const routes = [
   {
@@ -49,11 +50,43 @@ const routes = [
     component: () => import('@/views/OrderDetail.vue'),
     meta: { title: '订单详情', requiresAuth: true }
   },
+  // Admin routes - grouped under AdminLayout
   {
-    path: '/admin/products',
-    name: 'AdminProducts',
-    component: () => import('@/views/admin/Products.vue'),
-    meta: { title: '商品管理', requiresAuth: true }
+    path: '/admin',
+    component: AdminLayout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'AdminDashboard',
+        component: () => import('@/views/admin/AdminDashboard.vue'),
+        meta: { title: '仪表盘 - 管理后台' }
+      },
+      {
+        path: 'products',
+        name: 'AdminProducts',
+        component: () => import('@/views/admin/AdminProducts.vue'),
+        meta: { title: '商品管理 - 管理后台' }
+      },
+      {
+        path: 'orders',
+        name: 'AdminOrders',
+        component: () => import('@/views/admin/AdminOrders.vue'),
+        meta: { title: '订单管理 - 管理后台' }
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/views/admin/AdminUsers.vue'),
+        meta: { title: '用户管理 - 管理后台' }
+      },
+      {
+        path: 'reviews',
+        name: 'AdminReviews',
+        component: () => import('@/views/admin/AdminReviews.vue'),
+        meta: { title: '评价管理 - 管理后台' }
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
