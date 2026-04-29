@@ -1,0 +1,18 @@
+{
+  "name": "栖居家具",
+  "short_name": "栖居",
+  "description": "匠心品质·自然生活 - 栖居家具电商平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#8B7355",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

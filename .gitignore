@@ -1,0 +1,35 @@
+# Java
+backend/target/
+*.class
+*.jar
+*.war
+*.log
+logs/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/logs/
+
+# Env
+.env
+.env.local
+*.secret
+
+# Maven
+backend/target/
+backend/logs/
