@@ -20,9 +20,13 @@ App({
    * 小程序启动时
    */
   onLaunch() {
-    // 获取系统信息
-    const systemInfo = wx.getSystemInfoSync();
-    this.globalData.systemInfo = systemInfo;
+    // 获取窗口信息 (替代弃用的 getSystemInfoSync)
+    try {
+      const windowInfo = wx.getWindowInfo();
+      this.globalData.windowInfo = windowInfo || {};
+    } catch (e) {
+      this.globalData.windowInfo = {};
+    }
 
     // 检查登录态
     const token = auth.getToken();
