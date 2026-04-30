@@ -60,8 +60,44 @@ Component({
       const util = require('../../utils/util');
       const api = require('../../utils/api');
       const baseUrl = api.getBaseUrl();
-      const imageUrl = util.formatImageUrl(product.image, baseUrl);
-      this.setData({ imageUrl });
+      let url = util.formatImageUrl(product.image, baseUrl);
+
+      // 本地路径直接使用
+      if (!url.startsWith('http')) {
+        this.setData({ imageUrl: url });
+        return;
+      }
+
+      // HTTP 图片：用 downloadFile 下载到本地再显示
+      const cacheKey = 'img_cache_' + url;
+      const cached = wx.getStorageSync(cacheKey);
+      if (cached) {
+        // 检查缓存文件是否还存在
+        try {
+          const fm = wx.getFileSystemManager();
+          fm.accessSync(cached);
+          this.setData({ imageUrl: cached });
+          return;
+        } catch (e) {
+          // 缓存文件不存在，重新下载
+        }
+      }
+
+      wx.downloadFile({
+        url: url,
+        success: (res) => {
+          if (res.statusCode === 200) {
+            // 缓存到本地
+            try {
+              wx.setStorageSync(cacheKey, res.tempFilePath);
+            } catch (e) {}
+            this.setData({ imageUrl: res.tempFilePath });
+          }
+        },
+        fail: () => {
+          this.setData({ imageUrl: '' });
+        }
+      });
     },
 
     /**

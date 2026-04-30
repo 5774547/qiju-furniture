@@ -189,15 +189,23 @@ Page({
   },
 
   /**
-   * 图片加载失败
+   * 图片加载失败时，用 downloadFile 下载到本地再显示
    */
   onImageError(e) {
+    const url = e.target.dataset.src || e.currentTarget.dataset.src || '';
     const index = e.currentTarget.dataset.index;
-    if (index !== undefined) {
-      const images = [...this.data.images];
-      images[index] = '';
-      this.setData({ images });
-    }
+    if (!url || !url.startsWith('http://') || index === undefined) return;
+
+    wx.downloadFile({
+      url: url,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const images = [...this.data.images];
+          images[index] = res.tempFilePath;
+          this.setData({ images });
+        }
+      },
+    });
   },
 
   /**

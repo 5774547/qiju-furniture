@@ -144,11 +144,11 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
     return '';
   }
 
-  // 微信小程序本地图片：MinIO 图片转本地路径
+  // 如果是 MinIO 图片，通过后端代理获取（HTTP 可用，因为组件内用 downloadFile）
   if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
     const parts = imagePath.split('/');
     const filename = parts[parts.length - 1];
-    return `/images/products/${filename}`;
+    return `${baseUrl}/api/images/${filename}`;
   }
 
   // 已经是完整 URL（http/https 开头）

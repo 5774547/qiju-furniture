@@ -18,8 +18,7 @@ Page({
     if (options.redirect) {
       this.redirectUrl = decodeURIComponent(options.redirect);
     }
-    // 进入页面自动尝试微信一键登录
-    this.wechatLogin();
+    // 不自动微信登录，让用户手动点击或使用账号密码
   },
 
   onUsernameInput(e) {
