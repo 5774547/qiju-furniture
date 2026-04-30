@@ -306,6 +306,15 @@ function healthCheck() {
   return request('GET', '/api/system/health', null, { noAuth: true });
 }
 
+/**
+ * 微信小程序一键登录
+ * @param {object} params - {code, nickName, avatarUrl}
+ * @returns {Promise<{token: string, user: object}>}
+ */
+function miniAppLogin(params) {
+  return request('POST', '/api/auth/miniapp-login', params, { noAuth: true });
+}
+
 module.exports = {
   setBaseUrl,
   getBaseUrl,
@@ -326,4 +335,5 @@ module.exports = {
   getMyInquiries,
   getInquiryDetail,
   healthCheck,
+  miniAppLogin,
 };

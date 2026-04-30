@@ -24,3 +24,9 @@ minio:
   secret-key: ${MINIO_SECRET_KEY:minioadmin123}
   bucket: ${MINIO_BUCKET:qiju-furniture}
   public-url: ${MINIO_PUBLIC_URL:http://localhost:9000}
+
+# 微信小程序配置
+wechat:
+  appid: wx69d67f33abf22596
+  secret: ""  # 生产环境需要填写 AppSecret
+  dev-mode: true  # 开发模式下跳过微信验证

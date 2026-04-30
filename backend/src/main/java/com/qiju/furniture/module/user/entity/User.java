@@ -57,6 +57,11 @@ public class User implements Serializable {
     private String avatar;
 
     /**
+     * Company name (for B2B retailer)
+     */
+    private String companyName;
+
+    /**
      * Role: user / admin
      */
     @Builder.Default
