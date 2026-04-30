@@ -1,0 +1,16 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "description": "栖居家具 - 全栈项目 (含 Vue 前端 + 微信小程序)",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "enhance": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.3.4",
+  "appid": "wx69d67f33abf22596",
+  "projectname": "qiju-furniture",
+  "condition": {}
+}
