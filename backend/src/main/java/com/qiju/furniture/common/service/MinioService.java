@@ -165,4 +165,27 @@ public class MinioService {
         }
         return null;
     }
+
+    /**
+     * 检查对象是否存在
+     */
+    public boolean objectExists(String bucket, String objectName) {
+        try {
+            s3Client.headObject(h -> h.bucket(bucket).key(objectName));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 获取对象输入流
+     */
+    public InputStream getObject(String bucket, String objectName) {
+        GetObjectRequest getRequest = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(objectName)
+                .build();
+        return s3Client.getObject(getRequest);
+    }
 }

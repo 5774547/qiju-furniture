@@ -146,6 +146,13 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
 
   // 已经是完整 URL（http/https 开头）
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    // 微信小程序禁止 HTTP 图片，转成后端代理地址
+    if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
+      // 提取文件名: http://localhost:9000/qiju-furniture/products/product_1.jpg
+      const parts = imagePath.split('/');
+      const filename = parts[parts.length - 1];
+      return `${baseUrl}/api/images/${filename}`;
+    }
     return imagePath;
   }
 

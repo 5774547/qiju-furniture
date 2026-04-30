@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/reviews/**").permitAll()
                 .requestMatchers("/api/inquiry-lists/**").authenticated()
                 .requestMatchers("/api/system/**").permitAll()
+                .requestMatchers("/api/images/**").permitAll()
                 .requestMatchers("/api/upload/**").authenticated()
                 .requestMatchers("/api/admin/**").hasRole("admin")
                 .requestMatchers("/api/**").authenticated()
