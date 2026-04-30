@@ -144,9 +144,11 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
     return '';
   }
 
-  // MinIO 原始地址：直接用 downloadFile 下载到本地
+  // MinIO 原始地址 → 后端代理（wx.downloadFile 通过 8080 端口可访问）
   if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
-    return imagePath;
+    const parts = imagePath.split('/');
+    const filename = parts[parts.length - 1];
+    return `${baseUrl}/api/images/${filename}`;
   }
 
   // 已经是完整 URL（http/https 开头）
