@@ -117,10 +117,24 @@ Component({
     },
 
     /**
-     * 阻止图片加载失败
+     * 图片加载失败时，通过后端代理下载
      */
     onImageError() {
-      this.setData({ imageUrl: '' });
+      const { product, imageUrl } = this.data;
+      if (!product || !product.image) return;
+      // 只对 HTTP 代理图片做下载重试
+      if (!imageUrl || !imageUrl.startsWith('http://')) return;
+      wx.downloadFile({
+        url: imageUrl,
+        success: (res) => {
+          if (res.statusCode === 200) {
+            this.setData({ imageUrl: res.tempFilePath });
+          }
+        },
+        fail: () => {
+          this.setData({ imageUrl: '' });
+        },
+      });
     },
   },
 });

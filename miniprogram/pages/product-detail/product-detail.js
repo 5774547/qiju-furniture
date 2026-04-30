@@ -197,10 +197,24 @@ Page({
   onImageError(e) {
     const index = e.currentTarget.dataset.index;
     if (index === undefined) return;
-    // 图片加载失败时清空，显示 placeholder
-    const images = [...this.data.images];
-    images[index] = '';
-    this.setData({ images });
+    // 图片加载失败，通过后端代理下载
+    const url = this.data.images[index];
+    if (!url || !url.startsWith('http://')) return;
+    wx.downloadFile({
+      url: url,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const images = [...this.data.images];
+          images[index] = res.tempFilePath;
+          this.setData({ images });
+        }
+      },
+      fail: () => {
+        const images = [...this.data.images];
+        images[index] = '';
+        this.setData({ images });
+      },
+    });
   },
 
   /**
