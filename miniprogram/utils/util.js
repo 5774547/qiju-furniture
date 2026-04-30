@@ -152,6 +152,9 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
   }
 
   // 已经是完整 URL（http/https 开头）
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
 
   // 云文件 ID
   if (imagePath.startsWith('cloud://')) {
