@@ -28,7 +28,10 @@ Page({
     this.setData({ productId: id });
     this.loadProductDetail(id);
     this.loadReviews(id);
-    this.checkInquiryStatus(id);
+    // 仅在已登录时检查询价清单状态
+    if (wx.getStorageSync('token')) {
+      this.checkInquiryStatus(id);
+    }
 
     // 启用分享
     wx.showShareMenu({
