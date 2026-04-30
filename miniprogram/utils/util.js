@@ -144,11 +144,9 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
     return '';
   }
 
-  // 开发环境：MinIO 图片通过后端代理地址获取（onImageError 触发下载）
+  // 保持 MinIO 原始地址（上线后用 HTTPS 域名替换，<image> 可直接加载）
   if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
-    const parts = imagePath.split('/');
-    const filename = parts[parts.length - 1];
-    return `${baseUrl}/api/images/${filename}`;
+    return imagePath;
   }
 
   // 已经是完整 URL（http/https 开头）

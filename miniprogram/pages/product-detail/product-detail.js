@@ -197,16 +197,33 @@ Page({
   onImageError(e) {
     const index = e.currentTarget.dataset.index;
     if (index === undefined) return;
-    // 图片加载失败，通过后端代理下载
     const url = this.data.images[index];
-    if (!url || !url.startsWith('http://')) return;
-    wx.downloadFile({
-      url: url,
+    if (!url || !url.startsWith('http://localhost:9000')) return;
+
+    // 从 MinIO URL 提取文件名，转成后端 base64 JSON 端点
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    const dataUrl = `http://localhost:8080/api/images/data/${filename}`;
+
+    wx.request({
+      url: dataUrl,
       success: (res) => {
-        if (res.statusCode === 200) {
-          const images = [...this.data.images];
-          images[index] = res.tempFilePath;
-          this.setData({ images });
+        if (res.statusCode === 200 && res.data?.code === 200) {
+          const dataUri = res.data.data.dataUri;
+          const base64 = dataUri.split(',')[1];
+          const fm = wx.getFileSystemManager();
+          const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
+          try {
+            const buffer = wx.base64ToArrayBuffer(base64);
+            fm.writeFileSync(tempPath, buffer);
+            const images = [...this.data.images];
+            images[index] = tempPath;
+            this.setData({ images });
+          } catch (e) {
+            const images = [...this.data.images];
+            images[index] = dataUri;
+            this.setData({ images });
+          }
         }
       },
       fail: () => {

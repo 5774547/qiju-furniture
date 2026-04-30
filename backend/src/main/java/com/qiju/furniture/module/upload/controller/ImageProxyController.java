@@ -4,19 +4,22 @@ import com.qiju.furniture.common.result.Result;
 import com.qiju.furniture.common.service.MinioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 图片代理 Controller
- * 同时支持：
- * 1. GET /api/images/{filename} — 字节流（普通浏览器）
- * 2. GET /api/images/data/{filename} — Base64 JSON（微信小程序）
+ *
+ * 双通道：
+ * 1. GET /api/images/{filename} — 字节流（浏览器/普通场景）
+ * 2. GET /api/images/data/{filename} — Base64 JSON（微信小程序通过 wx.request 获取）
  */
 @Tag(name = "图片代理")
 @RestController
@@ -31,7 +34,38 @@ public class ImageProxyController {
         this.minioService = minioService;
     }
 
-    @Operation(summary = "获取产品图片（Base64 JSON，供 wx.request 使用）")
+    @Operation(summary = "获取产品图片（字节流）")
+    @GetMapping("/raw/**")
+    public void getImage(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            // 从 URL 提取文件名: /api/images/raw/product_1.jpg
+            String path = request.getRequestURI();
+            String filename = path.substring(path.lastIndexOf('/') + 1);
+
+            String bucket = "qiju-furniture";
+            String objectName = "products/" + filename;
+
+            if (!minioService.objectExists(bucket, objectName)) {
+                response.setStatus(404);
+                return;
+            }
+
+            String contentType = "image/jpeg";
+            if (filename.endsWith(".png")) contentType = "image/png";
+            else if (filename.endsWith(".gif")) contentType = "image/gif";
+            else if (filename.endsWith(".webp")) contentType = "image/webp";
+            response.setContentType(contentType);
+
+            try (InputStream is = minioService.getObject(bucket, objectName)) {
+                is.transferTo(response.getOutputStream());
+            }
+        } catch (Exception e) {
+            log.error("Failed to proxy image: {}", filename, e);
+            response.setStatus(500);
+        }
+    }
+
+    @Operation(summary = "获取产品图片（Base64 JSON）")
     @GetMapping("/data/{filename}")
     public Result<Map<String, Object>> getImageData(@PathVariable String filename) {
         try {

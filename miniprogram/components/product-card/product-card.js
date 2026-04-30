@@ -117,18 +117,33 @@ Component({
     },
 
     /**
-     * 图片加载失败时，通过后端代理下载
+     * 图片加载失败时，从后端代理获取 base64 并写入本地文件
      */
     onImageError() {
-      const { product, imageUrl } = this.data;
-      if (!product || !product.image) return;
-      // 只对 HTTP 代理图片做下载重试
-      if (!imageUrl || !imageUrl.startsWith('http://')) return;
-      wx.downloadFile({
-        url: imageUrl,
+      const { imageUrl } = this.data;
+      if (!imageUrl || !imageUrl.startsWith('http://localhost:9000')) return;
+
+      // 从 MinIO URL 提取文件名，转成后端 base64 JSON 端点
+      const parts = imageUrl.split('/');
+      const filename = parts[parts.length - 1];
+      const dataUrl = `http://localhost:8080/api/images/data/${filename}`;
+
+      wx.request({
+        url: dataUrl,
         success: (res) => {
-          if (res.statusCode === 200) {
-            this.setData({ imageUrl: res.tempFilePath });
+          if (res.statusCode === 200 && res.data?.code === 200) {
+            const dataUri = res.data.data.dataUri;
+            const base64 = dataUri.split(',')[1];
+            const fm = wx.getFileSystemManager();
+            const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
+            try {
+              const buffer = wx.base64ToArrayBuffer(base64);
+              fm.writeFileSync(tempPath, buffer);
+              this.setData({ imageUrl: tempPath });
+            } catch (e) {
+              // 写文件失败，尝试 dataURI
+              this.setData({ imageUrl: dataUri });
+            }
           }
         },
         fail: () => {
