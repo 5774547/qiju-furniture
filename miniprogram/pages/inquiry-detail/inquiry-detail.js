@@ -33,6 +33,13 @@ Page({
     this.setData({ loading: true });
     try {
       const detail = await api.getInquiryDetail(id);
+      // Pre-compute subtotals (WXML doesn't support .toFixed())
+      if (detail && detail.items) {
+        detail.items = detail.items.map(item => ({
+          ...item,
+          subtotal: ((item.wholesalePrice || 0) * (item.quantity || 0)).toFixed(2)
+        }));
+      }
       this.setData({ detail: detail || {}, loading: false });
     } catch (err) {
       console.error('加载询价单详情失败:', err);

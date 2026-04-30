@@ -110,7 +110,7 @@
           <text>¥{{item.wholesalePrice || 0}}</text>
         </view>
         <view class="td td-total">
-          <text class="td-total-price">¥{{((item.wholesalePrice || 0) * (item.quantity || 0)).toFixed(2)}}</text>
+          <text class="td-total-price">¥{{item.subtotal}}</text>
         </view>
       </view>
 
