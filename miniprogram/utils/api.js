@@ -89,8 +89,12 @@ function request(method, url, data, options = {}) {
 
         // HTTP 状态码错误
         if (statusCode !== 200) {
+          if (statusCode === 401 || statusCode === 403) {
+            // 未认证，清除登录态
+            wx.removeStorageSync('token');
+            wx.removeStorageSync('userInfo');
+          }
           const errMsg = `网络异常 (${statusCode})`;
-          wx.showToast({ title: errMsg, icon: 'none' });
           reject({ code: statusCode, msg: errMsg });
           return;
         }

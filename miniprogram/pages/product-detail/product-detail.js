@@ -115,6 +115,10 @@ Page({
   async loadReviews(productId) {
     try {
       const reviews = await api.getReviews(productId);
+      // WXML doesn't support .repeat(), pre-compute stars
+      if (reviews && reviews.length) {
+        reviews.forEach(r => { r.stars = '★'.repeat(r.rating || 5); });
+      }
       this.setData({ reviews: reviews || [] });
     } catch (err) {
       console.error('加载评价失败:', err);

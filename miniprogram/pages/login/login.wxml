@@ -1,0 +1,70 @@
+<!-- 登录页 -->
+<view class="page-login">
+  <view class="login-container">
+    <!-- 品牌标识区域 -->
+    <view class="brand-section">
+      <image class="brand-logo" src="/assets/icons/logo.png" mode="aspectFit"></image>
+      <text class="brand-title">栖居家具</text>
+      <text class="brand-desc">品质实木 · 温馨家居</text>
+    </view>
+
+    <!-- 登录表单 -->
+    <view class="form-section">
+      <!-- 用户名/邮箱输入 -->
+      <view class="form-item">
+        <view class="input-wrapper">
+          <image class="input-icon" src="/assets/icons/user.png" mode="aspectFit"></image>
+          <input
+            class="form-input"
+            type="text"
+            placeholder="请输入用户名/邮箱"
+            placeholder-class="input-placeholder"
+            value="{{username}}"
+            bindinput="onUsernameInput"
+            maxlength="50"
+          />
+        </view>
+      </view>
+
+      <!-- 密码输入 -->
+      <view class="form-item">
+        <view class="input-wrapper">
+          <image class="input-icon" src="/assets/icons/lock.png" mode="aspectFit"></image>
+          <input
+            class="form-input"
+            type="{{showPassword ? 'text' : 'password'}}"
+            placeholder="请输入密码"
+            placeholder-class="input-placeholder"
+            value="{{password}}"
+            bindinput="onPasswordInput"
+            maxlength="32"
+          />
+          <image
+            class="eye-icon"
+            src="/assets/icons/{{showPassword ? 'eye-open' : 'eye-close'}}.png"
+            mode="aspectFit"
+            bindtap="onTogglePassword"
+          ></image>
+        </view>
+      </view>
+
+      <!-- 登录按钮 -->
+      <button
+        class="login-btn {{isLogging ? 'btn-disabled' : ''}}"
+        disabled="{{isLogging}}"
+        loading="{{isLogging}}"
+        bindtap="onLogin"
+      >
+        {{isLogging ? '登录中...' : '登 录'}}
+      </button>
+    </view>
+
+    <!-- 底部操作区 -->
+    <view class="footer-section">
+      <view class="register-link" bindtap="onGoRegister">
+        <text>还没有账号？</text>
+        <text class="link-text">去注册</text>
+      </view>
+    </view>
+  </view>
+</view>

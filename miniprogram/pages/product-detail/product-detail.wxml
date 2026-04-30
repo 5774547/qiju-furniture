@@ -84,7 +84,7 @@
       <view class="review-item" wx:for="{{reviews}}" wx:key="id">
         <view class="review-header">
           <text class="reviewer-name">{{item.reviewerName || '匿名用户'}}</text>
-          <text class="review-rating">{{'★'.repeat(item.rating || 5)}}</text>
+          <text class="review-rating">{{item.stars}}</text>
         </view>
         <text class="review-content">{{item.content}}</text>
         <text class="review-time">{{formatTime(item.createTime)}}</text>

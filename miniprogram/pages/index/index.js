@@ -63,12 +63,20 @@ Page({
         { name: '灯饰', count: 0, icon: categoryIcons['灯饰'] },
       ];
 
-      // 检查询价清单状态
+      // 检查询价清单状态（仅登录时）
       const records = productsData.records || [];
-      const inquiryList = await api.getInquiryList().catch(() => []);
-      const inquiryProductIds = new Set(
-        (inquiryList || []).map(item => item.productId || item.product?.id)
-      );
+      let inquiryProductIds = new Set();
+      try {
+        const token = wx.getStorageSync('token');
+        if (token) {
+          const inquiryList = await api.getInquiryList();
+          inquiryProductIds = new Set(
+            (inquiryList || []).map(item => item.productId || item.product?.id)
+          );
+        }
+      } catch (e) {
+        // 未登录时跳过
+      }
       const hotProducts = records.map(p => ({
         ...p,
         inInquiryList: inquiryProductIds.has(p.id),

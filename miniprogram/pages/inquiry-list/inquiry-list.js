@@ -12,6 +12,12 @@ Page({
   },
 
   onShow() {
+    // 检查登录
+    const token = wx.getStorageSync('token');
+    if (!token) {
+      this.setData({ items: [], totalQuantity: 0, loading: false });
+      return;
+    }
     this.loadInquiryList();
   },
 
