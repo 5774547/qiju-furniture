@@ -1,0 +1,66 @@
+<!-- 询价清单页 -->
+<view class="page-inquiry-list">
+  <!-- 空状态 -->
+  <view wx:if="{{items.length === 0}}" class="empty-state">
+    <image class="empty-icon" src="/assets/icons/empty.png" mode="aspectFit"></image>
+    <text class="empty-text">询价清单是空的</text>
+    <text class="empty-hint">浏览产品，将感兴趣的产品加入清单</text>
+    <button class="btn-browse" bindtap="onBrowseProducts">去浏览产品</button>
+  </view>
+
+  <!-- 清单标题 -->
+  <view wx:else class="list-header">
+    <text class="list-title">询价清单 ({{items.length}})</text>
+    <text class="btn-clear" bindtap="onClearAll">清空</text>
+  </view>
+
+  <!-- 产品列表 -->
+  <view wx:else class="list-body">
+    <view
+      class="list-item"
+      wx:for="{{items}}"
+      wx:key="id"
+    >
+      <image
+        class="item-image"
+        src="{{item.productImage || '/assets/icons/product-placeholder.png'}}"
+        mode="aspectFill"
+      ></image>
+      <view class="item-info">
+        <text class="item-name">{{item.productName}}</text>
+        <text class="item-price">批发价: ¥{{item.wholesalePrice}}</text>
+        <view class="item-qty-control">
+          <text class="qty-btn" bindtap="onDecrease" data-index="{{index}}">−</text>
+          <input
+            class="qty-input"
+            type="number"
+            value="{{item.quantity}}"
+            data-index="{{index}}"
+            bindinput="onQuantityInput"
+            bindblur="onQuantityBlur"
+          ></input>
+          <text class="qty-btn" bindtap="onIncrease" data-index="{{index}}">+</text>
+          <text class="qty-unit">{{item.unit || '件'}}</text>
+        </view>
+      </view>
+      <view class="item-actions">
+        <text class="btn-delete" bindtap="onDelete" data-id="{{item.id}}" data-index="{{index}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部固定操作栏 -->
+  <view wx:else class="bottom-bar">
+    <view class="bottom-bar-inner">
+      <view class="total-info">
+        <text class="total-label">共 </text>
+        <text class="total-count">{{totalQuantity}}</text>
+        <text class="total-label"> 件商品</text>
+      </view>
+      <button class="btn-submit" bindtap="onSubmitInquiry">提交询价</button>
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view wx:else class="bottom-placeholder"></view>
+</view>

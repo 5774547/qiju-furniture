@@ -1,0 +1,28 @@
+<view class="tabbar safe-area-bottom">
+  <view
+    class="tabbar-item {{current === item.index ? 'tabbar-item-active' : ''}}"
+    wx:for="{{list}}"
+    wx:key="index"
+    data-index="{{item.index}}"
+    data-page-path="{{item.pagePath}}"
+    bindtap="onSwitchTab"
+  >
+    <!-- 图标 -->
+    <view class="tabbar-icon-wrapper">
+      <image
+        class="tabbar-icon"
+        src="{{current === item.index ? item.selectedIconPath : item.iconPath}}"
+        mode="aspectFit"
+      ></image>
+      <!-- 询价清单角标 -->
+      <view
+        wx:if="{{item.index === 1 && inquiryCount > 0}}"
+        class="tabbar-badge"
+      >
+        <text class="tabbar-badge-text">{{inquiryCount > 99 ? '99+' : inquiryCount}}</text>
+      </view>
+    </view>
+    <!-- 文字 -->
+    <text class="tabbar-text">{{item.text}}</text>
+  </view>
+</view>

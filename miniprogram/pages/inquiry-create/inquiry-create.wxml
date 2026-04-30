@@ -1,0 +1,106 @@
+<!-- 提交询价页 -->
+<view class="page-inquiry-create">
+  <!-- 联系信息表单 -->
+  <view class="form-section">
+    <view class="section-title">联系信息</view>
+    <view class="form-group">
+      <view class="form-item">
+        <text class="form-label required">联系人</text>
+        <input
+          class="form-input"
+          placeholder="请输入联系人姓名"
+          placeholder-style="color: var(--color-text-placeholder)"
+          value="{{customerName}}"
+          bindinput="onInputChange"
+          data-field="customerName"
+        ></input>
+      </view>
+      <view class="form-item">
+        <text class="form-label required">联系电话</text>
+        <input
+          class="form-input"
+          type="number"
+          maxlength="11"
+          placeholder="请输入手机号码"
+          placeholder-style="color: var(--color-text-placeholder)"
+          value="{{customerPhone}}"
+          bindinput="onInputChange"
+          data-field="customerPhone"
+        ></input>
+      </view>
+      <view class="form-item">
+        <text class="form-label">公司名称</text>
+        <input
+          class="form-input"
+          placeholder="请输入公司名称（选填）"
+          placeholder-style="color: var(--color-text-placeholder)"
+          value="{{customerCompany}}"
+          bindinput="onInputChange"
+          data-field="customerCompany"
+        ></input>
+      </view>
+      <view class="form-item">
+        <text class="form-label">地址</text>
+        <input
+          class="form-input"
+          placeholder="请输入地址（选填）"
+          placeholder-style="color: var(--color-text-placeholder)"
+          value="{{address}}"
+          bindinput="onInputChange"
+          data-field="address"
+        ></input>
+      </view>
+      <view class="form-item form-item-textarea">
+        <text class="form-label">备注</text>
+        <textarea
+          class="form-textarea"
+          placeholder="其他需求或备注（选填）"
+          placeholder-style="color: var(--color-text-placeholder)"
+          value="{{remark}}"
+          bindinput="onInputChange"
+          data-field="remark"
+        ></textarea>
+      </view>
+    </view>
+  </view>
+
+  <!-- 产品清单（只读） -->
+  <view class="form-section">
+    <view class="section-title">
+      <text>产品清单 ({{items.length}})</text>
+    </view>
+    <view class="product-list">
+      <view
+        class="product-item"
+        wx:for="{{items}}"
+        wx:key="id"
+        wx:for-index="idx"
+      >
+        <image
+          class="product-image"
+          src="{{item.productImage || '/assets/icons/product-placeholder.png'}}"
+          mode="aspectFill"
+        ></image>
+        <view class="product-info">
+          <text class="product-name">{{item.productName}}</text>
+          <text class="product-detail">数量: {{item.quantity}}{{item.unit || '件'}}</text>
+        </view>
+        <text class="product-price">¥{{item.wholesalePrice}}/{{item.unit || '件'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-bar">
+    <button
+      class="btn-submit {{submitting ? 'btn-submit-disabled' : ''}}"
+      disabled="{{submitting}}"
+      bindtap="onSubmit"
+    >
+      {{submitting ? '提交中...' : '提交询价'}}
+    </button>
+  </view>
+
+  <!-- 底部占位 -->
+  <view class="bottom-placeholder"></view>
+</view>

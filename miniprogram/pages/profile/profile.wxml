@@ -1,0 +1,63 @@
+<!-- 个人中心页 -->
+<view class="page-profile">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-avatar-wrapper">
+      <image
+        class="user-avatar"
+        src="{{userInfo.avatarUrl || '/assets/icons/default-avatar.png'}}"
+        mode="aspectFill"
+      ></image>
+    </view>
+    <view class="user-info">
+      <text class="user-nickname">{{userInfo.nickname || userInfo.username || '未登录'}}</text>
+      <text wx:if="{{userInfo.companyName}}" class="user-company">{{userInfo.companyName}}</text>
+      <text wx:if="{{!isLoggedIn}}" class="login-hint" bindtap="onLoginTap">点击登录</text>
+    </view>
+    <view wx:if="{{isLoggedIn}}" class="edit-btn" bindtap="onEditProfile">
+      <text>编辑</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-group">
+    <!-- 我的询价单 -->
+    <view class="menu-item" bindtap="onMyInquiriesTap">
+      <image class="menu-icon" src="/assets/icons/inquiry-order.png" mode="aspectFit"></image>
+      <text class="menu-text">我的询价单</text>
+      <image class="menu-arrow" src="/assets/icons/arrow-right.png" mode="aspectFit"></image>
+    </view>
+
+    <!-- 我的询价清单 -->
+    <view class="menu-item" bindtap="onInquiryListTap">
+      <image class="menu-icon" src="/assets/icons/inquiry-list.png" mode="aspectFit"></image>
+      <text class="menu-text">询价清单</text>
+      <view wx:if="{{inquiryCount > 0}}" class="menu-badge">
+        <text>{{inquiryCount > 99 ? '99+' : inquiryCount}}</text>
+      </view>
+      <image class="menu-arrow" src="/assets/icons/arrow-right.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <view class="menu-group">
+    <!-- 关于我们 -->
+    <view class="menu-item" bindtap="onAboutUsTap">
+      <image class="menu-icon" src="/assets/icons/about.png" mode="aspectFit"></image>
+      <text class="menu-text">关于我们</text>
+      <image class="menu-arrow" src="/assets/icons/arrow-right.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 退出登录按钮 -->
+  <view wx:if="{{isLoggedIn}}" class="logout-section">
+    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  </view>
+
+  <!-- 版本号 -->
+  <view class="version-info">
+    <text>栖居家具 v1.0.0</text>
+  </view>
+
+  <!-- 底部留白 -->
+  <view class="tabbar-placeholder"></view>
+</view>

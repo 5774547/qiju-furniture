@@ -1,0 +1,308 @@
+/* 询价单详情页样式 */
+@import "../../style/variables.wxss";
+
+.page-inquiry-detail {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 加载状态 */
+.loading-state {
+  padding: 300rpx 0;
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--color-text-placeholder);
+}
+
+/* ===== 状态卡片 ===== */
+.status-card {
+  background-color: var(--color-bg-white);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-base);
+}
+
+.status-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.status-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.status-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* 状态标签 */
+.status-tag {
+  display: inline-block;
+  padding: 4rpx 20rpx;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.status-0 {
+  background-color: #FFF7E6;
+  color: #D48806;
+}
+
+.status-1 {
+  background-color: #E6F7FF;
+  color: #1890FF;
+}
+
+.status-2 {
+  background-color: #F6FFED;
+  color: #52C41A;
+}
+
+.status-3 {
+  background-color: #F5F5F5;
+  color: #BFBFBF;
+}
+
+/* ===== 报价卡片 ===== */
+.quotation-card {
+  background-color: var(--color-bg-white);
+  margin-bottom: var(--spacing-base);
+  overflow: hidden;
+}
+
+.quotation-header {
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.quotation-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.quotation-body {
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.quotation-amount {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: var(--color-danger);
+}
+
+.quotation-meta {
+  margin-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.meta-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
+  margin-right: var(--spacing-sm);
+}
+
+.meta-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 通用区块卡片 ===== */
+.section-card {
+  background-color: var(--color-bg-white);
+  margin-bottom: var(--spacing-base);
+}
+
+.section-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.section-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
+}
+
+/* 联系信息 */
+.info-list {
+  padding: var(--spacing-base) var(--spacing-lg);
+}
+
+.info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  width: 120rpx;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* ===== 商品明细表格 ===== */
+.table-header {
+  display: flex;
+  flex-direction: row;
+  padding: var(--spacing-base) var(--spacing-lg);
+  background-color: var(--color-bg);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.th {
+  text-align: center;
+}
+
+.th-product {
+  flex: 2;
+  text-align: left;
+}
+
+.th-qty {
+  flex: 1;
+}
+
+.th-price {
+  flex: 1;
+}
+
+.th-total {
+  flex: 1.2;
+  text-align: right;
+}
+
+.table-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-base) var(--spacing-lg);
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.td-product {
+  flex: 2;
+  flex-direction: row;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.td-image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  flex-shrink: 0;
+  margin-right: var(--spacing-sm);
+}
+
+.td-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+}
+
+.td-qty {
+  flex: 1;
+}
+
+.td-price {
+  flex: 1;
+}
+
+.td-total {
+  flex: 1.2;
+  justify-content: flex-end;
+}
+
+.td-total-price {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.table-empty {
+  padding: var(--spacing-xl);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
+}
+
+/* ===== 备注卡片 ===== */
+.remark-card {
+  background-color: var(--color-bg-white);
+  margin-bottom: var(--spacing-base);
+}
+
+.remark-header {
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.remark-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.remark-body {
+  padding: var(--spacing-base) var(--spacing-lg);
+}
+
+.remark-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-regular);
+  line-height: 1.6;
+}
+
+/* 底部留白 */
+.bottom-placeholder {
+  height: var(--spacing-xl);
+}

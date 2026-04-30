@@ -1,0 +1,46 @@
+<view class="product-card" bindtap="onTapCard">
+  <!-- 产品图片 -->
+  <view class="product-image-wrapper">
+    <image
+      class="product-image"
+      src="{{imageUrl}}"
+      mode="aspectFill"
+      binderror="onImageError"
+      lazy-load="{{true}}"
+    ></image>
+    <view wx:if="{{product.tag}}" class="product-tag">{{product.tag}}</view>
+  </view>
+
+  <!-- 产品信息 -->
+  <view class="product-info">
+    <!-- 产品名称 -->
+    <view class="product-name">{{product.name}}</view>
+
+    <!-- 分类标签 -->
+    <view class="product-meta">
+      <text wx:if="{{product.category}}" class="category-tag">{{product.category}}</text>
+      <text wx:if="{{product.unit}}" class="unit-text">{{product.unit}}</text>
+    </view>
+
+    <!-- 价格区域 -->
+    <view class="product-price-row">
+      <view class="price-wholesale">
+        <text class="price-label">批发价</text>
+        <text class="price-value">{{formatPrice(product.wholesalePrice)}}</text>
+      </view>
+      <view wx:if="{{product.price}}" class="price-retail">
+        <text>零售价 </text>
+        <text class="price-original">{{formatPrice(product.price)}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view
+      class="inquiry-btn {{inInquiryList ? 'inquiry-btn-active' : ''}}"
+      catchtap="onAddToInquiry"
+    >
+      <text wx:if="{{!inInquiryList}}">+ 加入询价清单</text>
+      <text wx:else>已在清单中</text>
+    </view>
+  </view>
+</view>

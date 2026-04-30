@@ -1,0 +1,71 @@
+/* 全局 CSS 变量 - 栖居家具小程序 */
+
+/* 主色调 */
+page {
+  /* 品牌色 - 金色/棕色系 */
+  --color-primary: #8B7355;
+  --color-primary-light: #A0896D;
+  --color-primary-dark: #6B5B45;
+  --color-primary-bg: #F5F0EB;
+
+  /* 功能色 */
+  --color-success: #67C23A;
+  --color-warning: #E6A23C;
+  --color-danger: #F56C6C;
+  --color-info: #909399;
+
+  /* 文字色 */
+  --color-text-primary: #303133;
+  --color-text-regular: #606266;
+  --color-text-secondary: #909399;
+  --color-text-placeholder: #C0C4CC;
+  --color-text-white: #FFFFFF;
+
+  /* 背景色 */
+  --color-bg: #F8F8F8;
+  --color-bg-white: #FFFFFF;
+  --color-bg-page: #F5F5F5;
+  --color-bg-card: #FFFFFF;
+
+  /* 边框色 */
+  --color-border-base: #DCDFE6;
+  --color-border-light: #E4E7ED;
+  --color-border-lighter: #EBEEF5;
+  --color-border-extra-light: #F2F6FC;
+
+  /* 字体大小 */
+  --font-size-xs: 20rpx;
+  --font-size-sm: 24rpx;
+  --font-size-base: 28rpx;
+  --font-size-md: 30rpx;
+  --font-size-lg: 32rpx;
+  --font-size-xl: 36rpx;
+  --font-size-xxl: 40rpx;
+  --font-size-title: 44rpx;
+
+  /* 间距 */
+  --spacing-xs: 8rpx;
+  --spacing-sm: 12rpx;
+  --spacing-base: 16rpx;
+  --spacing-md: 20rpx;
+  --spacing-lg: 24rpx;
+  --spacing-xl: 32rpx;
+  --spacing-xxl: 40rpx;
+
+  /* 圆角 */
+  --radius-sm: 6rpx;
+  --radius-base: 10rpx;
+  --radius-md: 14rpx;
+  --radius-lg: 20rpx;
+  --radius-circle: 50%;
+
+  /* 阴影 */
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+
+  /* 导航栏 */
+  --nav-bar-height: 88rpx;
+  --tab-bar-height: 98rpx;
+  --tab-bar-safe-area-bottom: env(safe-area-inset-bottom, 0rpx);
+}

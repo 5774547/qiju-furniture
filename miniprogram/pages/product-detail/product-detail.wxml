@@ -1,0 +1,105 @@
+<!-- 产品详情页 -->
+<view class="page-detail">
+  <!-- 轮播大图 -->
+  <swiper
+    class="detail-swiper"
+    indicator-dots="{{true}}"
+    indicator-color="rgba(255,255,255,0.4)"
+    indicator-active-color="#8B7355"
+    autoplay="{{true}}"
+    interval="4000"
+    duration="500"
+    circular="{{true}}"
+  >
+    <swiper-item wx:for="{{images}}" wx:key="*this">
+      <image class="swiper-image" src="{{item}}" mode="aspectFill" binderror="onImageError"></image>
+    </swiper-item>
+    <swiper-item wx:if="{{images.length === 0}}">
+      <view class="swiper-placeholder">
+        <text>暂无图片</text>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 产品信息区域 -->
+  <view class="detail-info card">
+    <!-- 产品名称 + 分类标签 -->
+    <view class="detail-header">
+      <text class="detail-name">{{product.name || ''}}</text>
+      <text wx:if="{{product.category}}" class="detail-category-tag">{{product.category}}</text>
+    </view>
+
+    <!-- 价格区域 -->
+    <view class="detail-price-section">
+      <view class="price-wholesale">
+        <text class="price-wholesale-label">批发价</text>
+        <text class="price-wholesale-value">{{formatPrice(product.wholesalePrice)}}</text>
+      </view>
+      <view wx:if="{{product.price && product.price > 0}}" class="price-retail">
+        <text class="price-retail-label">零售价 </text>
+        <text class="price-original">{{formatPrice(product.price)}}</text>
+      </view>
+    </view>
+
+    <!-- 库存/单位显示 -->
+    <view class="detail-meta-row">
+      <view class="meta-item">
+        <text class="meta-label">库存</text>
+        <text class="meta-value">{{product.stock !== undefined ? product.stock : '充足'}}</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-label">单位</text>
+        <text class="meta-value">{{product.unit || '件'}}</text>
+      </view>
+      <view wx:if="{{product.salesVolume !== undefined}}" class="meta-item">
+        <text class="meta-label">销量</text>
+        <text class="meta-value">{{product.salesVolume}}</text>
+      </view>
+    </view>
+
+    <!-- 产品描述 -->
+    <view wx:if="{{product.description}}" class="detail-description">
+      <text class="description-text">{{product.description}}</text>
+    </view>
+  </view>
+
+  <!-- 规格参数 -->
+  <view wx:if="{{specs.length > 0}}" class="detail-specs card">
+    <view class="section-title">规格参数</view>
+    <view class="specs-list">
+      <view class="spec-item" wx:for="{{specs}}" wx:key="key">
+        <text class="spec-key">{{item.key}}</text>
+        <text class="spec-value">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评价列表（折叠） -->
+  <view class="detail-reviews card">
+    <view class="section-title reviews-header" bindtap="onToggleReviews">
+      <text>产品评价 ({{reviews.length}})</text>
+      <text class="toggle-icon {{reviewsExpanded ? 'expanded' : ''}}">›</text>
+    </view>
+    <view wx:if="{{reviewsExpanded && reviews.length > 0}}" class="reviews-list">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-header">
+          <text class="reviewer-name">{{item.reviewerName || '匿名用户'}}</text>
+          <text class="review-rating">{{'★'.repeat(item.rating || 5)}}</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <text class="review-time">{{formatTime(item.createTime)}}</text>
+      </view>
+    </view>
+    <view wx:elif="{{reviewsExpanded && reviews.length === 0}}" class="empty-reviews">
+      <text>暂无评价</text>
+    </view>
+  </view>
+
+  <!-- 底部固定按钮区域 -->
+  <view class="bottom-action-bar safe-area-bottom">
+    <view class="action-btn inquiry-btn" bindtap="onAddToInquiry">
+      <text wx:if="{{!inInquiryList}}">加入询价清单</text>
+      <text wx:else>已在询价清单中</text>
+    </view>
+  </view>
+</view>

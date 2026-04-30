@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的询价单",
+  "backgroundColor": "#F5F5F5",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": true
+}

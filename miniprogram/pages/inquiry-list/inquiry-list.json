@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "询价清单",
+  "backgroundColor": "#F5F5F5",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 100
+}

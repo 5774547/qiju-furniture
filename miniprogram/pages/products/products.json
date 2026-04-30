@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "product-card": "../../components/product-card/product-card"
+  },
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 100,
+  "backgroundColor": "#F5F5F5",
+  "backgroundTextStyle": "dark",
+  "navigationBarTitleText": "产品列表"
+}

@@ -1,0 +1,189 @@
+/* 我的询价单页样式 */
+@import "../../style/variables.wxss";
+
+.page-inquiries {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx var(--spacing-xl) 0;
+}
+
+.empty-icon {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: var(--spacing-xl);
+}
+
+.empty-text {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-placeholder);
+  margin-bottom: var(--spacing-xl);
+}
+
+.btn-browse {
+  width: 320rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+  border: none;
+}
+
+.btn-browse::after {
+  border: none;
+}
+
+/* 加载中 */
+.loading-state {
+  padding: 200rpx 0;
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--color-text-placeholder);
+}
+
+/* 卡片列表 */
+.inquiry-list {
+  padding: var(--spacing-base) var(--spacing-lg);
+}
+
+/* 卡片 */
+.inquiry-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-base);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.inquiry-card:active {
+  opacity: 0.9;
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+  border-bottom: 2rpx solid var(--color-border-extra-light);
+}
+
+.inquiry-no-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inquiry-no-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-right: var(--spacing-sm);
+}
+
+.inquiry-no {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* 状态标签 */
+.status-tag {
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.status-0 {
+  background-color: #FFF7E6;
+  color: #D48806;
+}
+
+.status-1 {
+  background-color: #E6F7FF;
+  color: #1890FF;
+}
+
+.status-2 {
+  background-color: #F6FFED;
+  color: #52C41A;
+}
+
+.status-3 {
+  background-color: #F5F5F5;
+  color: #BFBFBF;
+}
+
+/* 卡片内容 */
+.card-body {
+  padding: var(--spacing-base) var(--spacing-lg);
+}
+
+.info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.info-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  width: 120rpx;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.info-value-price {
+  color: var(--color-danger);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+}
+
+/* 卡片底部 */
+.card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-base);
+  background-color: var(--color-bg);
+}
+
+.create-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-placeholder);
+}
+
+.arrow-icon {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-placeholder);
+  font-weight: 300;
+}
+
+/* 底部留白 */
+.bottom-placeholder {
+  height: var(--spacing-xl);
+}

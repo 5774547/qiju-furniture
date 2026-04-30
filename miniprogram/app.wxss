@@ -1,0 +1,161 @@
+/* 全局样式 - 栖居家具小程序 */
+@import "style/variables.wxss";
+
+/**
+ * 基础重置
+ */
+page {
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+view,
+scroll-view,
+swiper,
+movable-view,
+cover-view {
+  box-sizing: border-box;
+}
+
+image {
+  display: block;
+}
+
+/**
+ * 容器
+ */
+.container {
+  padding: var(--spacing-base);
+}
+
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-base);
+  box-shadow: var(--shadow-sm);
+}
+
+/**
+ * 按钮基础样式
+ */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+  border: none;
+  border-radius: var(--radius-base);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  text-align: center;
+  display: inline-block;
+  line-height: 1.5;
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-disabled {
+  background-color: var(--color-border-base);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+/**
+ * 输入框通用样式
+ */
+.input-field {
+  width: 100%;
+  height: 80rpx;
+  background: var(--color-bg);
+  border: 2rpx solid var(--color-border-base);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--spacing-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+}
+
+/**
+ * 分隔线
+ */
+.divider {
+  height: 2rpx;
+  background-color: var(--color-border-extra-light);
+  margin: var(--spacing-lg) 0;
+}
+
+/**
+ * 空状态
+ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl) 0;
+}
+
+.empty-state text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  margin-top: var(--spacing-base);
+}
+
+/**
+ * 加载中
+ */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl) 0;
+}
+
+.loading-container text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-sm);
+}
+
+/**
+ * 标签
+ */
+.tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+/**
+ * 价格
+ */
+.price {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.price-original {
+  color: var(--color-text-placeholder);
+  text-decoration: line-through;
+  font-size: var(--font-size-sm);
+}
+
+/**
+ * 安全区域
+ */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0rpx);
+}

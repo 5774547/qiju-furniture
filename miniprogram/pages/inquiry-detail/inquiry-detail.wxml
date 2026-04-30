@@ -1,0 +1,136 @@
+<!-- 询价单详情页 -->
+<view class="page-inquiry-detail">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else>
+    <!-- 顶部状态卡片 -->
+    <view class="status-card">
+      <view class="status-row">
+        <text class="status-label">状态</text>
+        <view class="status-tag status-{{detail.status}}">
+          <text>{{statusText[detail.status] || '未知'}}</text>
+        </view>
+      </view>
+      <view class="status-row">
+        <text class="status-label">询价单号</text>
+        <text class="status-value">{{detail.inquiryNo || '#' + detail.id}}</text>
+      </view>
+      <view class="status-row">
+        <text class="status-label">提交时间</text>
+        <text class="status-value">{{formatTime(detail.createTime)}}</text>
+      </view>
+    </view>
+
+    <!-- 报价信息（仅已报价/已确认状态） -->
+    <view wx:if="{{detail.status === 1 || detail.status === 2}}" class="quotation-card">
+      <view class="quotation-header">
+        <text class="quotation-title">商家报价</text>
+      </view>
+      <view class="quotation-body">
+        <text class="quotation-amount">¥{{detail.quotationAmount || '待定'}}</text>
+        <view wx:if="{{detail.validUntil}}" class="quotation-meta">
+          <text class="meta-label">有效期至</text>
+          <text class="meta-value">{{formatTime(detail.validUntil)}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 管理员备注 -->
+    <view wx:if="{{detail.adminRemark}}" class="remark-card">
+      <view class="remark-header">
+        <text class="remark-title">商家备注</text>
+      </view>
+      <view class="remark-body">
+        <text class="remark-text">{{detail.adminRemark}}</text>
+      </view>
+    </view>
+
+    <!-- 联系信息 -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">联系信息</text>
+      </view>
+      <view class="info-list">
+        <view class="info-row">
+          <text class="info-label">联系人</text>
+          <text class="info-value">{{detail.customerName}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">电话</text>
+          <text class="info-value">{{detail.customerPhone}}</text>
+        </view>
+        <view wx:if="{{detail.customerCompany}}" class="info-row">
+          <text class="info-label">公司</text>
+          <text class="info-value">{{detail.customerCompany}}</text>
+        </view>
+        <view wx:if="{{detail.address}}" class="info-row">
+          <text class="info-label">地址</text>
+          <text class="info-value">{{detail.address}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品明细 -->
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">商品明细</text>
+        <text wx:if="{{detail.items && detail.items.length}}" class="section-subtitle">共 {{detail.items.length}} 项</text>
+      </view>
+
+      <!-- 表头 -->
+      <view class="table-header">
+        <text class="th th-product">商品</text>
+        <text class="th th-qty">数量</text>
+        <text class="th th-price">单价</text>
+        <text class="th th-total">小计</text>
+      </view>
+
+      <!-- 商品行 -->
+      <view
+        class="table-row"
+        wx:for="{{detail.items || []}}"
+        wx:key="id"
+        wx:for-index="idx"
+      >
+        <view class="td td-product">
+          <image
+            class="td-image"
+            src="{{item.productImage || '/assets/icons/product-placeholder.png'}}"
+            mode="aspectFill"
+          ></image>
+          <text class="td-name">{{item.productName}}</text>
+        </view>
+        <view class="td td-qty">
+          <text>{{item.quantity || 0}}</text>
+        </view>
+        <view class="td td-price">
+          <text>¥{{item.wholesalePrice || 0}}</text>
+        </view>
+        <view class="td td-total">
+          <text class="td-total-price">¥{{((item.wholesalePrice || 0) * (item.quantity || 0)).toFixed(2)}}</text>
+        </view>
+      </view>
+
+      <!-- 空明细 -->
+      <view wx:if="{{!detail.items || detail.items.length === 0}}" class="table-empty">
+        <text>暂无商品明细</text>
+      </view>
+    </view>
+
+    <!-- 客户备注 -->
+    <view wx:if="{{detail.remark}}" class="section-card">
+      <view class="section-header">
+        <text class="section-title">客户备注</text>
+      </view>
+      <view class="remark-body">
+        <text class="remark-text">{{detail.remark}}</text>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-placeholder"></view>
+  </view>
+</view>

@@ -41,11 +41,12 @@ Use the `/browse` skill from gstack for all web browsing. Never use `mcp__claude
 | `/gstack-upgrade` | Update gstack |
 | `/learn` | Learn from user patterns |
 
-## Project: 栖居家具 (qiju-furniture)
+## 项目: 栖居家具 (qiju-furniture)
 
-Spring Boot 3.2 + Vue 3 + Element Plus 全栈家具电商平台。
+Spring Boot 3.2 + Vue 3 + Element Plus 全栈家具电商平台 → 已改造为 B2B 工厂产品展示+询价工具。
 
 - 后端: 端口 8080, JDK 21, MySQL 3307, MinIO 9000, Redis 6379
 - 前端: 端口 5173, Vite proxy /api → localhost:8080
 - API 统一响应格式: `Result<T>(code, msg, data)` — 前端 Axios 拦截器自动解包
-- 权限: `/api/auth/**` `/api/products/**` `/api/reviews/**` `/api/cart/**` 公开; `/api/admin/**` 需 ROLE_admin; 其余需认证
+- 权限: `/api/auth/**` `/api/products/**` `/api/reviews/**` 公开; `/api/admin/**` 需 ROLE_admin; `/api/inquiry-lists/**` `/api/inquiries/**` 需认证
+- **微信小程序**: `miniprogram/` 目录, 微信开发者工具导入即可运行
