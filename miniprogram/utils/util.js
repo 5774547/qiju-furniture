@@ -144,11 +144,11 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
     return '';
   }
 
-  // MinIO 原始地址 → 后端代理（wx.downloadFile 通过 8080 端口可访问）
+  // 开发环境：MinIO 图片转本地路径（微信开发者工具无法加载 HTTP 二进制）
   if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
     const parts = imagePath.split('/');
     const filename = parts[parts.length - 1];
-    return `${baseUrl}/api/images/${filename}`;
+    return `/images/products/${filename}`;
   }
 
   // 已经是完整 URL（http/https 开头）

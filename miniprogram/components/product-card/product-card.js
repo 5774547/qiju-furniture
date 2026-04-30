@@ -60,50 +60,8 @@ Component({
       const util = require('../../utils/util');
       const api = require('../../utils/api');
       const baseUrl = api.getBaseUrl();
-      let url = util.formatImageUrl(product.image, baseUrl);
-
-      // 本地路径或 HTTPS 直接使用
-      if (!url.startsWith('http://')) {
-        this.setData({ imageUrl: url });
-        return;
-      }
-
-      // HTTP 图片：用 wx.request 获取 base64 data URI
-      // 注：wx.request 到 localhost:8080 是通的（API 正常返回），但下载二进制会超时
-      // 改用后端返回 base64 JSON 的方式
-      const cacheKey = 'img_cache_' + url;
-      const cached = wx.getStorageSync(cacheKey);
-      if (cached) {
-        this.setData({ imageUrl: cached });
-        return;
-      }
-
-      // 将 /api/images/xxx 转为 /api/images/data/xxx
-      const dataUrl = url.replace('/api/images/', '/api/images/data/');
-      wx.request({
-        url: dataUrl,
-        success: (res) => {
-          if (res.statusCode === 200 && res.data?.code === 200) {
-            const dataUri = res.data.data.dataUri;
-            // base64 → 本地文件（dataURI 太长 <image> 渲染不了）
-            const base64 = dataUri.split(',')[1];
-            const fm = wx.getFileSystemManager();
-            const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
-            try {
-              const buffer = wx.base64ToArrayBuffer(base64);
-              fm.writeFileSync(tempPath, buffer);
-              wx.setStorageSync(cacheKey, tempPath);
-              this.setData({ imageUrl: tempPath });
-            } catch (e) {
-              // fallback: 直接显示 dataURI
-              this.setData({ imageUrl: dataUri });
-            }
-          }
-        },
-        fail: () => {
-          this.setData({ imageUrl: '' });
-        }
-      });
+      const imageUrl = util.formatImageUrl(product.image, baseUrl);
+      this.setData({ imageUrl });
     },
 
     /**
