@@ -144,16 +144,14 @@ function formatImageUrl(imagePath, baseUrl = 'http://localhost:8080') {
     return '';
   }
 
-  // 已经是完整 URL（http/https 开头）
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-      // 微信小程序禁止 HTTP 图片，转成后端代理地址（HTTPS）
-      if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
-        const parts = imagePath.split('/');
-        const filename = parts[parts.length - 1];
-        return `${baseUrl.replace('http://', 'https://')}/api/images/${filename}`;
-      }
-    return imagePath;
+  // 微信小程序本地图片：MinIO 图片转本地路径
+  if (imagePath.includes('localhost:9000') || imagePath.includes('minio')) {
+    const parts = imagePath.split('/');
+    const filename = parts[parts.length - 1];
+    return `/images/products/${filename}`;
   }
+
+  // 已经是完整 URL（http/https 开头）
 
   // 云文件 ID
   if (imagePath.startsWith('cloud://')) {

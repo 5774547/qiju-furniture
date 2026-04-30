@@ -3,7 +3,7 @@
  * 基于 wx.request 封装，支持 JWT 认证、自动解包、错误处理
  */
 
-const DEV_BASE_URL = 'https://localhost:8443';
+const DEV_BASE_URL = 'http://localhost:8080';
 const PROD_BASE_URL = 'https://api.qijufurniture.com';
 
 let _baseUrl = DEV_BASE_URL;
