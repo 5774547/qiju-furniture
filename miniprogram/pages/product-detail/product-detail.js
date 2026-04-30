@@ -195,17 +195,25 @@ Page({
    * 图片加载失败时，用 downloadFile 下载到本地再显示
    */
   onImageError(e) {
-    const url = e.target.dataset.src || e.currentTarget.dataset.src || '';
     const index = e.currentTarget.dataset.index;
-    if (!url || !url.startsWith('http://') || index === undefined) return;
+    if (index === undefined) return;
 
-    wx.downloadFile({
+    const url = this.data.images[index];
+    if (!url || !url.startsWith('http://')) return;
+
+    wx.request({
       url: url,
+      responseType: 'arraybuffer',
       success: (res) => {
         if (res.statusCode === 200) {
-          const images = [...this.data.images];
-          images[index] = res.tempFilePath;
-          this.setData({ images });
+          const fm = wx.getFileSystemManager();
+          const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
+          try {
+            fm.writeFileSync(tempPath, res.data);
+            const images = [...this.data.images];
+            images[index] = tempPath;
+            this.setData({ images });
+          } catch (e) {}
         }
       },
     });

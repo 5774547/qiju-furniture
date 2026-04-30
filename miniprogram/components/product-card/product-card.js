@@ -62,36 +62,38 @@ Component({
       const baseUrl = api.getBaseUrl();
       let url = util.formatImageUrl(product.image, baseUrl);
 
-      // 本地路径直接使用
-      if (!url.startsWith('http')) {
+      // 本地路径或 HTTPS 直接使用
+      if (!url.startsWith('http://')) {
         this.setData({ imageUrl: url });
         return;
       }
 
-      // HTTP 图片：用 downloadFile 下载到本地再显示
+      // HTTP 图片：用 wx.request 下载二进制到本地再显示
       const cacheKey = 'img_cache_' + url;
       const cached = wx.getStorageSync(cacheKey);
       if (cached) {
-        // 检查缓存文件是否还存在
         try {
           const fm = wx.getFileSystemManager();
           fm.accessSync(cached);
           this.setData({ imageUrl: cached });
           return;
-        } catch (e) {
-          // 缓存文件不存在，重新下载
-        }
+        } catch (e) {}
       }
 
-      wx.downloadFile({
+      wx.request({
         url: url,
+        responseType: 'arraybuffer',
         success: (res) => {
           if (res.statusCode === 200) {
-            // 缓存到本地
+            const fm = wx.getFileSystemManager();
+            const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
             try {
-              wx.setStorageSync(cacheKey, res.tempFilePath);
-            } catch (e) {}
-            this.setData({ imageUrl: res.tempFilePath });
+              fm.writeFileSync(tempPath, res.data);
+              wx.setStorageSync(cacheKey, tempPath);
+              this.setData({ imageUrl: tempPath });
+            } catch (e) {
+              this.setData({ imageUrl: '' });
+            }
           }
         },
         fail: () => {
