@@ -68,32 +68,27 @@ Component({
         return;
       }
 
-      // HTTP 图片：用 wx.request 下载二进制到本地再显示
+      // HTTP 图片：用 wx.request 获取 base64 data URI
+      // 注：wx.request 到 localhost:8080 是通的（API 正常返回），但下载二进制会超时
+      // 改用后端返回 base64 JSON 的方式
       const cacheKey = 'img_cache_' + url;
       const cached = wx.getStorageSync(cacheKey);
       if (cached) {
-        try {
-          const fm = wx.getFileSystemManager();
-          fm.accessSync(cached);
-          this.setData({ imageUrl: cached });
-          return;
-        } catch (e) {}
+        this.setData({ imageUrl: cached });
+        return;
       }
 
+      // 将 /api/images/xxx 转为 /api/images/data/xxx
+      const dataUrl = url.replace('/api/images/', '/api/images/data/');
       wx.request({
-        url: url,
-        responseType: 'arraybuffer',
+        url: dataUrl,
         success: (res) => {
-          if (res.statusCode === 200) {
-            const fm = wx.getFileSystemManager();
-            const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
+          if (res.statusCode === 200 && res.data?.code === 200) {
+            const dataUri = res.data.data.dataUri;
             try {
-              fm.writeFileSync(tempPath, res.data);
-              wx.setStorageSync(cacheKey, tempPath);
-              this.setData({ imageUrl: tempPath });
-            } catch (e) {
-              this.setData({ imageUrl: '' });
-            }
+              wx.setStorageSync(cacheKey, dataUri);
+            } catch (e) {}
+            this.setData({ imageUrl: dataUri });
           }
         },
         fail: () => {

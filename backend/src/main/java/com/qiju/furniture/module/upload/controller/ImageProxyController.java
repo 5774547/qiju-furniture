@@ -1,19 +1,22 @@
 package com.qiju.furniture.module.upload.controller;
 
+import com.qiju.furniture.common.result.Result;
 import com.qiju.furniture.common.service.MinioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.InputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 图片代理 Controller
- * 将 MinIO 的 HTTP 图片通过 Spring Boot 代理输出
- * 解决微信小程序禁止 HTTP 图片的问题
+ * 同时支持：
+ * 1. GET /api/images/{filename} — 字节流（普通浏览器）
+ * 2. GET /api/images/data/{filename} — Base64 JSON（微信小程序）
  */
 @Tag(name = "图片代理")
 @RestController
@@ -28,34 +31,35 @@ public class ImageProxyController {
         this.minioService = minioService;
     }
 
-    @Operation(summary = "获取产品图片")
-    @GetMapping("/{filename}")
-    public void getImage(@PathVariable String filename, HttpServletResponse response) {
+    @Operation(summary = "获取产品图片（Base64 JSON，供 wx.request 使用）")
+    @GetMapping("/data/{filename}")
+    public Result<Map<String, Object>> getImageData(@PathVariable String filename) {
         try {
             String bucket = "qiju-furniture";
             String objectName = "products/" + filename;
 
-            // 检查文件是否存在
             if (!minioService.objectExists(bucket, objectName)) {
-                log.warn("Image not found: {}/{}", bucket, objectName);
-                response.setStatus(404);
-                return;
+                return Result.error(404, "图片不存在");
             }
 
-            // 设置 Content-Type
             String contentType = "image/jpeg";
             if (filename.endsWith(".png")) contentType = "image/png";
             else if (filename.endsWith(".gif")) contentType = "image/gif";
-            else if (filename.endsWith(".webp")) contentType = "image/webp";
-            response.setContentType(contentType);
 
-            // 代理输出图片
-            try (InputStream is = minioService.getObject(bucket, objectName)) {
-                is.transferTo(response.getOutputStream());
+            try (var is = minioService.getObject(bucket, objectName)) {
+                byte[] bytes = is.readAllBytes();
+                String base64 = Base64.getEncoder().encodeToString(bytes);
+                String dataUri = "data:" + contentType + ";base64," + base64;
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("dataUri", dataUri);
+                result.put("size", bytes.length);
+                result.put("filename", filename);
+                return Result.ok(result);
             }
         } catch (Exception e) {
-            log.error("Failed to proxy image: {}", filename, e);
-            response.setStatus(500);
+            log.error("Failed to get image data: {}", filename, e);
+            return Result.error(500, "获取图片失败");
         }
     }
 }

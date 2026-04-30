@@ -202,18 +202,12 @@ Page({
     if (!url || !url.startsWith('http://')) return;
 
     wx.request({
-      url: url,
-      responseType: 'arraybuffer',
+      url: url.replace('/api/images/', '/api/images/data/'),
       success: (res) => {
-        if (res.statusCode === 200) {
-          const fm = wx.getFileSystemManager();
-          const tempPath = `${wx.env.USER_DATA_PATH}/img_${Date.now()}.jpg`;
-          try {
-            fm.writeFileSync(tempPath, res.data);
-            const images = [...this.data.images];
-            images[index] = tempPath;
-            this.setData({ images });
-          } catch (e) {}
+        if (res.statusCode === 200 && res.data?.code === 200) {
+          const images = [...this.data.images];
+          images[index] = res.data.data.dataUri;
+          this.setData({ images });
         }
       },
     });
