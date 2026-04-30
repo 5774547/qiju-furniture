@@ -9,7 +9,6 @@
       </router-view>
     </main>
     <FooterBar />
-    <CompareBar />
     <el-backtop :right="30" :bottom="80" class="custom-backtop">
       <el-icon size="20"><ArrowUp /></el-icon>
     </el-backtop>
@@ -19,15 +18,18 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue'
 import FooterBar from '@/components/FooterBar.vue'
-import CompareBar from '@/components/CompareBar.vue'
 import { ArrowUp } from '@element-plus/icons-vue'
 import { onMounted } from 'vue'
-import { useCartStore } from '@/stores/cart'
+import { useInquiryListStore } from '@/stores/inquiryList'
+import { useAuthStore } from '@/stores/auth'
 
-const cartStore = useCartStore()
+const inquiryStore = useInquiryListStore()
+const authStore = useAuthStore()
 
 onMounted(() => {
-  cartStore.fetchCart()
+  if (authStore.isLoggedIn) {
+    inquiryStore.fetchInquiryList()
+  }
 })
 </script>
 

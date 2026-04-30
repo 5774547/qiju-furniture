@@ -7,7 +7,7 @@
             <span class="logo-icon">&#x1f3e0;</span>
             <span class="logo-text">栖居家具</span>
           </div>
-          <p class="brand-desc">匠心品质，自然生活。我们致力于为每一个家庭打造温馨、舒适、富有格调的家居空间。</p>
+          <p class="brand-desc">匠心品质，直供源头。工厂直营，批发定制，为您的项目提供优质家具解决方案。</p>
           <div class="social-links">
             <a href="#" class="social-link"><el-icon :size="20"><ChatRound /></el-icon></a>
             <a href="#" class="social-link"><el-icon :size="20"><Monitor /></el-icon></a>
@@ -28,27 +28,28 @@
         <div class="footer-col">
           <h4 class="footer-title">客户服务</h4>
           <ul class="footer-links">
-            <li><a href="#">配送说明</a></li>
-            <li><a href="#">退换政策</a></li>
+            <li><a href="#">批发说明</a></li>
+            <li><a href="#">定制服务</a></li>
             <li><a href="#">售后服务</a></li>
             <li><a href="#">常见问题</a></li>
           </ul>
         </div>
 
-        <div class="footer-col newsletter-col">
-          <h4 class="footer-title">订阅资讯</h4>
-          <p class="newsletter-desc">订阅我们的资讯，获取最新产品信息和优惠活动</p>
-          <div class="newsletter-form">
-            <el-input
-              v-model="newsletterEmail"
-              placeholder="输入您的邮箱"
-              size="large"
-              class="newsletter-input"
-              :prefix-icon="Message"
-            />
-            <el-button type="primary" size="large" @click="handleSubscribe" :loading="subscribing">
-              订阅
-            </el-button>
+        <div class="footer-col contact-col">
+          <h4 class="footer-title">联系我们</h4>
+          <p class="contact-desc">如有采购需求，欢迎联系我们获取报价</p>
+          <div class="contact-info">
+            <div class="contact-item">
+              <el-icon><Phone /></el-icon>
+              <span>400-888-8888</span>
+            </div>
+            <div class="contact-item">
+              <el-icon><Message /></el-icon>
+              <span>contact@qijufurniture.com</span>
+            </div>
+            <router-link to="/inquiry-list" class="contact-btn">
+              <el-button type="primary" size="large" round>立即询价</el-button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -66,30 +67,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { subscribeNewsletter } from '@/api/newsletter'
-import { ChatRound, Monitor, Message } from '@element-plus/icons-vue'
-
-const newsletterEmail = ref('')
-const subscribing = ref(false)
-
-async function handleSubscribe() {
-  if (!newsletterEmail.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail.value)) {
-    ElMessage.warning('请输入有效的邮箱地址')
-    return
-  }
-  subscribing.value = true
-  try {
-    await subscribeNewsletter({ email: newsletterEmail.value })
-    ElMessage.success('订阅成功！感谢您的关注！')
-    newsletterEmail.value = ''
-  } catch (e) {
-    // Error already handled by interceptor
-  } finally {
-    subscribing.value = false
-  }
-}
+import { ChatRound, Monitor, Message, Phone } from '@element-plus/icons-vue'
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -195,33 +173,30 @@ function scrollToTop() {
   color: var(--primary-color);
 }
 
-.newsletter-desc {
+.contact-desc {
   color: var(--text-tertiary);
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 16px;
 }
 
-.newsletter-form {
+.contact-info {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
 }
 
-.newsletter-input :deep(.el-input__wrapper) {
-  border-radius: 10px;
-  background: var(--input-bg);
-  box-shadow: none;
-  border: 1px solid var(--border-color);
-}
-
-.newsletter-input :deep(.el-input__wrapper:hover) {
-  border-color: var(--primary-color);
-}
-
-.newsletter-form .el-button {
-  border-radius: 10px;
-  flex-shrink: 0;
-  padding: 0 24px;
+.contact-btn {
+  margin-top: 8px;
+  text-decoration: none;
 }
 
 .footer-bottom {
@@ -261,7 +236,7 @@ function scrollToTop() {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  .newsletter-form {
+  .contact-form {
     flex-direction: column;
   }
   .footer-bottom {

@@ -19,9 +19,9 @@
             <el-icon><Goods /></el-icon>
             <span>商品管理</span>
           </el-menu-item>
-          <el-menu-item index="/admin/orders">
-            <el-icon><List /></el-icon>
-            <span>订单管理</span>
+          <el-menu-item index="/admin/inquiries">
+            <el-icon><ChatDotSquare /></el-icon>
+            <span>询价管理</span>
           </el-menu-item>
           <el-menu-item index="/admin/users">
             <el-icon><User /></el-icon>

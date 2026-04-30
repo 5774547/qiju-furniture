@@ -101,6 +101,16 @@ public class Product implements Serializable {
     private Integer stockCount;
 
     /**
+     * Wholesale price (for retailer/B2B pricing)
+     */
+    private BigDecimal wholesalePrice;
+
+    /**
+     * Unit (件/套/张/把)
+     */
+    private String unit;
+
+    /**
      * Estimated next restock date
      */
     private LocalDate nextBatch;

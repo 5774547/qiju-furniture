@@ -9,7 +9,7 @@
         <ScrollReveal>
           <div class="section-header">
             <h2 class="section-title">产品分类</h2>
-            <p class="section-desc">精选优质家具，满足您的各种家居需求</p>
+            <p class="section-desc">工厂直供·源头价格·定制批发</p>
           </div>
         </ScrollReveal>
 
@@ -51,11 +51,11 @@
       <ScrollReveal>
         <div class="promo-banner">
           <div class="promo-content">
-            <span class="promo-tag">限时特惠</span>
-            <h3 class="promo-title">春季焕新·全场低至7折</h3>
-            <p class="promo-desc">精选家具、灯具、装饰品，用新的家迎接新的季节</p>
+            <span class="promo-tag">工厂直供</span>
+            <h3 class="promo-title">源头工厂·品质保证·批发价格</h3>
+            <p class="promo-desc">多件组合优惠，详询在线客服</p>
             <el-button type="warning" size="large" round @click="scrollToProducts">
-              立即抢购
+              查看产品
               <el-icon><ArrowRight /></el-icon>
             </el-button>
           </div>
@@ -72,7 +72,7 @@
         <ScrollReveal>
           <div class="section-header">
             <h2 class="section-title">商品列表</h2>
-            <p class="section-desc">发现为您精心挑选的家居好物</p>
+            <p class="section-desc">工厂直供产品，欢迎询价</p>
           </div>
         </ScrollReveal>
 
@@ -194,24 +194,24 @@
           <div class="features-grid">
             <div class="feature-card">
               <div class="feature-icon">
-                <el-icon :size="36"><Van /></el-icon>
+                <el-icon :size="36"><Shop /></el-icon>
               </div>
-              <h4 class="feature-title">免费配送</h4>
-              <p class="feature-desc">订单满¥1999享免费配送服务</p>
+              <h4 class="feature-title">工厂直供</h4>
+              <p class="feature-desc">源头工厂，无中间商差价</p>
             </div>
             <div class="feature-card">
               <div class="feature-icon">
-                <el-icon :size="36"><Refresh /></el-icon>
+                <el-icon :size="36"><ChatDotSquare /></el-icon>
               </div>
-              <h4 class="feature-title">7天退换</h4>
-              <p class="feature-desc">不满意7天无理由退换货</p>
+              <h4 class="feature-title">在线询价</h4>
+              <p class="feature-desc">一键询价，快速获取报价</p>
             </div>
             <div class="feature-card">
               <div class="feature-icon">
                 <el-icon :size="36"><Headset /></el-icon>
               </div>
               <h4 class="feature-title">专属客服</h4>
-              <p class="feature-desc">一对一专属客服贴心服务</p>
+              <p class="feature-desc">一对一客服，专业选品建议</p>
             </div>
             <div class="feature-card">
               <div class="feature-icon">
@@ -231,7 +231,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product'
-import { Search, ArrowRight, Van, Refresh, Headset, Checked } from '@element-plus/icons-vue'
+import { Search, ArrowRight, Shop, ChatDotSquare, Headset, Checked } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import HeroCarousel from '@/components/HeroCarousel.vue'
 import ProductCard from '@/components/ProductCard.vue'

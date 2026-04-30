@@ -22,17 +22,21 @@ export function getDashboardStats() {
   return request.get('/admin/dashboard/stats')
 }
 
-// ===== 订单管理 =====
-export function getAdminOrders() {
-  return request.get('/admin/orders')
+// ===== 询价管理 =====
+export function getAdminInquiries() {
+  return request.get('/admin/inquiries')
 }
 
-export function getAdminOrderDetail(id) {
-  return request.get(`/admin/orders/${id}`)
+export function getAdminInquiryDetail(id) {
+  return request.get(`/admin/inquiries/${id}`)
 }
 
-export function updateOrderStatus(id, status) {
-  return request.put(`/admin/orders/${id}/status?status=${status}`)
+export function setInquiryQuotation(id, params) {
+  return request.put(`/admin/inquiries/${id}/quotation`, null, { params })
+}
+
+export function closeInquiry(id) {
+  return request.put(`/admin/inquiries/${id}/close`)
 }
 
 // ===== 用户管理 =====

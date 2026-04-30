@@ -57,10 +57,14 @@
           <div class="price-box">
             <div class="current-price">
               <span class="currency">¥</span>
-              <span class="price-value">{{ product.price?.toFixed(2) }}</span>
+              <span class="price-value">{{ (product.wholesalePrice || product.price)?.toFixed(2) }}</span>
+              <span class="price-label" v-if="product.wholesalePrice">批发价</span>
             </div>
-            <div class="original-price" v-if="product.originalPrice">
-              原价 ¥{{ product.originalPrice?.toFixed(2) }}
+            <div class="original-price" v-if="product.wholesalePrice">
+              零售价 ¥{{ product.price?.toFixed(2) }}
+            </div>
+            <div class="unit-info" v-if="product.unit">
+              单位: {{ product.unit }}
             </div>
           </div>
 
@@ -101,12 +105,12 @@
               type="primary"
               size="large"
               class="add-cart-btn"
-              @click="handleAddToCart"
-              :loading="addingToCart"
+              @click="handleAddToInquiry"
+              :loading="addingToInquiry"
               :disabled="!product.stock || product.stock <= 0"
             >
-              <el-icon><ShoppingCart /></el-icon>
-              加入购物车
+              <el-icon><ChatDotSquare /></el-icon>
+              加入询价清单
             </el-button>
             <el-button
               size="large"
@@ -123,12 +127,12 @@
           <!-- Service Assurance -->
           <div class="service-assurance">
             <div class="service-item">
-              <el-icon><Van /></el-icon>
-              <span>免费配送</span>
+              <el-icon><Factory /></el-icon>
+              <span>工厂直供</span>
             </div>
             <div class="service-item">
-              <el-icon><Refresh /></el-icon>
-              <span>7天退换</span>
+              <el-icon><ChatDotSquare /></el-icon>
+              <span>在线询价</span>
             </div>
             <div class="service-item">
               <el-icon><Headset /></el-icon>
@@ -136,7 +140,7 @@
             </div>
             <div class="service-item">
               <el-icon><Checked /></el-icon>
-              <span>正品保证</span>
+              <span>品质保证</span>
             </div>
           </div>
         </div>
@@ -224,15 +228,15 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useProductStore } from '@/stores/product'
-import { useCartStore } from '@/stores/cart'
+import { useInquiryListStore } from '@/stores/inquiryList'
 import { getReviews, submitReview as apiSubmitReview } from '@/api/review'
-import { ShoppingCart, Star, StarFilled, Van, Refresh, Headset, Checked } from '@element-plus/icons-vue'
+import { ChatDotSquare, Star, StarFilled, Headset, Checked } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
 import ProductCard from '@/components/ProductCard.vue'
 
 const route = useRoute()
 const productStore = useProductStore()
-const cartStore = useCartStore()
+const inquiryStore = useInquiryListStore()
 
 const product = ref(null)
 const loading = ref(true)
@@ -250,7 +254,7 @@ const imageList = computed(() => {
 
 const previewVisible = ref(false)
 const quantity = ref(1)
-const addingToCart = ref(false)
+const addingToInquiry = ref(false)
 const activeTab = ref('detail')
 const reviews = ref([])
 const submittingReview = ref(false)
@@ -292,19 +296,19 @@ function formatDate(date) {
   return date ? dayjs(date).format('YYYY-MM-DD') : ''
 }
 
-async function handleAddToCart() {
+async function handleAddToInquiry() {
   if (!product.value?.stock || product.value.stock <= 0) {
     ElMessage.warning('该商品暂时缺货')
     return
   }
-  addingToCart.value = true
+  addingToInquiry.value = true
   try {
-    await cartStore.addItem(product.value.id, quantity.value)
-    ElMessage.success('已加入购物车')
+    await inquiryStore.addItem(product.value.id, quantity.value)
+    ElMessage.success('已加入询价清单')
   } catch (e) {
     // Error handled by interceptor
   } finally {
-    addingToCart.value = false
+    addingToInquiry.value = false
   }
 }
 

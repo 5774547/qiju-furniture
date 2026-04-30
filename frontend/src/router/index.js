@@ -15,10 +15,10 @@ const routes = [
     meta: { title: '商品详情' }
   },
   {
-    path: '/cart',
-    name: 'Cart',
-    component: () => import('@/views/Cart.vue'),
-    meta: { title: '购物车' }
+    path: '/inquiry-list',
+    name: 'InquiryList',
+    component: () => import('@/views/InquiryList.vue'),
+    meta: { title: '询价清单' }
   },
   {
     path: '/login',
@@ -39,16 +39,16 @@ const routes = [
     meta: { title: '个人中心', requiresAuth: true }
   },
   {
-    path: '/order',
-    name: 'OrderList',
-    component: () => import('@/views/OrderList.vue'),
-    meta: { title: '我的订单', requiresAuth: true }
+    path: '/inquiries',
+    name: 'InquiryListPage',
+    component: () => import('@/views/InquiryListPage.vue'),
+    meta: { title: '我的询价单', requiresAuth: true }
   },
   {
-    path: '/order/:id',
-    name: 'OrderDetail',
-    component: () => import('@/views/OrderDetail.vue'),
-    meta: { title: '订单详情', requiresAuth: true }
+    path: '/inquiries/:id',
+    name: 'InquiryDetail',
+    component: () => import('@/views/InquiryDetail.vue'),
+    meta: { title: '询价单详情', requiresAuth: true }
   },
   // Admin routes - grouped under AdminLayout
   {
@@ -69,10 +69,10 @@ const routes = [
         meta: { title: '商品管理 - 管理后台' }
       },
       {
-        path: 'orders',
-        name: 'AdminOrders',
-        component: () => import('@/views/admin/AdminOrders.vue'),
-        meta: { title: '订单管理 - 管理后台' }
+        path: 'inquiries',
+        name: 'AdminInquiries',
+        component: () => import('@/views/admin/AdminInquiries.vue'),
+        meta: { title: '询价管理 - 管理后台' }
       },
       {
         path: 'users',

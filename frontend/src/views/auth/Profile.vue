@@ -34,9 +34,9 @@
               <el-icon><User /></el-icon>
               <span>个人信息</span>
             </div>
-            <router-link to="/order" class="menu-item">
+            <router-link to="/inquiries" class="menu-item">
               <el-icon><List /></el-icon>
-              <span>我的订单</span>
+              <span>我的询价单</span>
             </router-link>
           </div>
 

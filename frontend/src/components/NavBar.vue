@@ -13,22 +13,18 @@
           <el-icon><HomeFilled /></el-icon>
           首页
         </router-link>
-        <router-link to="/order" class="nav-link" :class="{ active: $route.path.startsWith('/order') }">
+        <router-link to="/inquiries" class="nav-link" :class="{ active: $route.path.startsWith('/inquiries') }">
           <el-icon><List /></el-icon>
-          我的订单
+          我的询价单
         </router-link>
-        <a href="#" class="nav-link" @click.prevent="showFAQ">
-          <el-icon><QuestionFilled /></el-icon>
-          帮助中心
-        </a>
       </nav>
 
       <div class="nav-right">
-        <router-link to="/cart" class="cart-link">
-          <el-badge :value="cartStore.count" :hidden="cartStore.count === 0" class="cart-badge">
-            <el-icon :size="22"><ShoppingCart /></el-icon>
+        <router-link to="/inquiry-list" class="cart-link">
+          <el-badge :value="inquiryStore.count" :hidden="inquiryStore.count === 0" class="cart-badge">
+            <el-icon :size="22"><ChatDotSquare /></el-icon>
           </el-badge>
-          <span class="cart-text">购物车</span>
+          <span class="cart-text">询价清单</span>
         </router-link>
 
         <!-- Logged in: user dropdown -->
@@ -47,9 +43,9 @@
                   <el-icon><User /></el-icon>
                   个人中心
                 </el-dropdown-item>
-                <el-dropdown-item command="orders">
+                <el-dropdown-item command="inquiries">
                   <el-icon><List /></el-icon>
-                  我的订单
+                  我的询价单
                 </el-dropdown-item>
                 <el-dropdown-item v-if="authStore.isAdmin" command="admin">
                   <el-icon><Setting /></el-icon>
@@ -85,16 +81,16 @@
 import { ref, watch, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useCartStore } from '@/stores/cart'
+import { useInquiryListStore } from '@/stores/inquiryList'
 import { useAuthStore } from '@/stores/auth'
 import {
-  ShoppingCart, HomeFilled, List, QuestionFilled, Moon, Sunny,
-  User, ArrowDown, SwitchButton, Setting
+  HomeFilled, List, Moon, Sunny,
+  User, ArrowDown, SwitchButton, Setting, ChatDotSquare
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
-const cartStore = useCartStore()
+const inquiryStore = useInquiryListStore()
 const authStore = useAuthStore()
 
 const isTransparent = ref(false)
@@ -121,6 +117,10 @@ onMounted(() => {
   if (authStore.isLoggedIn && !authStore.user) {
     authStore.fetchProfile()
   }
+  // Fetch inquiry list count
+  if (authStore.isLoggedIn) {
+    inquiryStore.fetchInquiryList()
+  }
 })
 
 function toggleTheme() {
@@ -134,17 +134,13 @@ function toggleTheme() {
   }
 }
 
-function showFAQ() {
-  ElMessage.info('常见问题：\n1. 如何下单？点击商品加入购物车即可下单\n2. 配送时间？一般3-7个工作日\n3. 支持退换货吗？7天无理由退换')
-}
-
 function handleUserCommand(command) {
   switch (command) {
     case 'profile':
       router.push('/profile')
       break
-    case 'orders':
-      router.push('/order')
+    case 'inquiries':
+      router.push('/inquiries')
       break
     case 'admin':
       router.push('/admin/dashboard')

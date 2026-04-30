@@ -18,18 +18,18 @@
       <div class="stat-card card-orders">
         <div class="stat-icon">📋</div>
         <div class="stat-info">
-          <div class="stat-value">{{ stats.totalOrders }}</div>
-          <div class="stat-label">订单总数</div>
-          <div class="stat-sub">待处理 {{ stats.pendingOrders }}</div>
+          <div class="stat-value">{{ stats.totalInquiries }}</div>
+          <div class="stat-label">询价总数</div>
+          <div class="stat-sub">待报价 {{ stats.pendingInquiries }}</div>
         </div>
       </div>
 
       <div class="stat-card card-revenue">
         <div class="stat-icon">💰</div>
         <div class="stat-info">
-          <div class="stat-value">¥{{ formatRevenue }}</div>
-          <div class="stat-label">总营业额</div>
-          <div class="stat-sub">已支付订单</div>
+          <div class="stat-value">{{ stats.quotedInquiries }}</div>
+          <div class="stat-label">已报价</div>
+          <div class="stat-sub">已回复报价的询价单</div>
         </div>
       </div>
 
@@ -43,27 +43,27 @@
       </div>
 
       <div class="stat-card card-reviews">
-        <div class="stat-icon">⭐</div>
+        <div class="stat-icon">⏳</div>
         <div class="stat-info">
-          <div class="stat-value">{{ stats.totalReviews }}</div>
-          <div class="stat-label">用户评价</div>
-          <div class="stat-sub">累计评价</div>
+          <div class="stat-value">{{ stats.pendingInquiries }}</div>
+          <div class="stat-label">待处理询价</div>
+          <div class="stat-sub">需尽快回复报价</div>
         </div>
       </div>
 
       <div class="stat-card card-pending">
-        <div class="stat-icon">⏳</div>
+        <div class="stat-icon">✅</div>
         <div class="stat-info">
-          <div class="stat-value">{{ stats.pendingOrders }}</div>
-          <div class="stat-label">待付款订单</div>
-          <div class="stat-sub">需关注处理</div>
+          <div class="stat-value">{{ stats.totalInquiries - stats.pendingInquiries }}</div>
+          <div class="stat-label">已处理</div>
+          <div class="stat-sub">已回复或已关闭</div>
         </div>
       </div>
     </div>
 
-    <!-- Order status breakdown -->
+    <!-- Inquiry status breakdown -->
     <div class="section">
-      <h3>📈 订单状态分布</h3>
+      <h3>📈 询价状态分布</h3>
       <div class="status-bar">
         <div
           v-for="s in statusData"
@@ -92,28 +92,21 @@ const loading = ref(false)
 const stats = ref({
   totalProducts: 0,
   onlineProducts: 0,
-  totalOrders: 0,
-  pendingOrders: 0,
-  paidOrders: 0,
-  shippedOrders: 0,
-  totalRevenue: 0,
+  totalInquiries: 0,
+  pendingInquiries: 0,
+  quotedInquiries: 0,
   totalUsers: 0,
   totalReviews: 0
 })
 
-const formatRevenue = computed(() => {
-  const num = Number(stats.value.totalRevenue)
-  return num.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-})
-
 const statusData = computed(() => {
   const s = stats.value
-  const total = s.totalOrders || 1
+  const total = s.totalInquiries || 1
+  const processed = total - s.pendingInquiries
   return [
-    { label: '待付款', count: s.pendingOrders, percent: (s.pendingOrders / total) * 100, color: '#f59e0b' },
-    { label: '已支付', count: s.paidOrders, percent: (s.paidOrders / total) * 100, color: '#10b981' },
-    { label: '已发货', count: s.shippedOrders, percent: (s.shippedOrders / total) * 100, color: '#3b82f6' },
-    { label: '已完成/其他', count: total - s.pendingOrders - s.paidOrders - s.shippedOrders, percent: ((total - s.pendingOrders - s.paidOrders - s.shippedOrders) / total) * 100, color: '#6b7280' }
+    { label: '待报价', count: s.pendingInquiries, percent: (s.pendingInquiries / total) * 100, color: '#f59e0b' },
+    { label: '已报价', count: s.quotedInquiries, percent: (s.quotedInquiries / total) * 100, color: '#10b981' },
+    { label: '已处理(其他)', count: processed - s.quotedInquiries, percent: ((processed - s.quotedInquiries) / total) * 100, color: '#6b7280' }
   ]
 })
 

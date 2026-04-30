@@ -35,7 +35,7 @@
       <h3 class="card-title">{{ product.name }}</h3>
       <div class="card-meta">
         <span class="card-category" v-if="product.category">{{ product.category }}</span>
-        <span class="card-sales" v-if="product.sales !== undefined">已售 {{ product.sales }}</span>
+        <span class="card-unit" v-if="product.unit">单位: {{ product.unit }}</span>
       </div>
       <el-rate
         v-if="product.rating"
@@ -47,39 +47,40 @@
         class="card-rating"
       />
       <div class="card-price-row">
-        <span class="card-price">¥{{ product.price?.toFixed(2) }}</span>
-        <span class="card-original-price" v-if="product.originalPrice">
-          ¥{{ product.originalPrice?.toFixed(2) }}
+        <span class="card-wholesale-price">批发价: ¥{{ (product.wholesalePrice || product.price)?.toFixed(2) }}</span>
+        <span class="card-retail-price" v-if="product.wholesalePrice">
+          零售价: ¥{{ product.price?.toFixed(2) }}
         </span>
       </div>
       <div class="card-actions">
-        <el-checkbox
-          v-model="isCompareSelected"
-          @change.stop="toggleCompare"
-          size="small"
-          @click.stop
-        >
-          对比
-        </el-checkbox>
         <el-button
           type="primary"
           size="small"
-          :icon="ShoppingCart"
-          circle
-          @click.stop="addToCartHandler"
-          :loading="addingToCart"
-        />
+          plain
+          @click.stop="addToInquiryHandler"
+          :loading="addingToInquiry"
+        >
+          <el-icon><ChatDotSquare /></el-icon>
+          加入询价
+        </el-button>
+        <el-button
+          size="small"
+          plain
+          @click.stop="shareProduct"
+        >
+          <el-icon><Share /></el-icon>
+        </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { ShoppingCart, View, Star, StarFilled } from '@element-plus/icons-vue'
-import { useCartStore } from '@/stores/cart'
+import { View, Star, StarFilled, ChatDotSquare, Share } from '@element-plus/icons-vue'
+import { useInquiryListStore } from '@/stores/inquiryList'
 
 const props = defineProps({
   product: {
@@ -89,7 +90,7 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const cartStore = useCartStore()
+const inquiryStore = useInquiryListStore()
 
 // Image fallback
 const placeholderImg = 'data:image/svg+xml,' + encodeURIComponent(
@@ -101,10 +102,7 @@ function onImgError(e) {
   e.target.src = placeholderImg
 }
 
-// For compare, we'll use a simple reactive approach
-const compareItems = ref(JSON.parse(localStorage.getItem('qiju_compare') || '[]'))
-const isCompareSelected = computed(() => compareItems.value.some(item => item.id === props.product.id))
-const addingToCart = ref(false)
+const addingToInquiry = ref(false)
 
 const isLiked = ref(localStorage.getItem(`qiju_like_${props.product.id}`) === 'true')
 
@@ -117,43 +115,33 @@ function toggleLike() {
   localStorage.setItem(`qiju_like_${props.product.id}`, isLiked.value ? 'true' : 'false')
 }
 
-function toggleCompare() {
-  const idx = compareItems.value.findIndex(item => item.id === props.product.id)
-  if (idx > -1) {
-    compareItems.value.splice(idx, 1)
-  } else {
-    if (compareItems.value.length >= 4) {
-      ElMessage.warning('最多对比4件商品')
-      return
-    }
-    compareItems.value.push({
-      id: props.product.id,
-      name: props.product.name,
-      image: props.product.image
-    })
-  }
-  localStorage.setItem('qiju_compare', JSON.stringify(compareItems.value))
-  // Dispatch event for compare bar
-  window.dispatchEvent(new CustomEvent('compare-updated', { detail: [...compareItems.value] }))
-}
-
-async function addToCartHandler() {
-  addingToCart.value = true
+async function addToInquiryHandler() {
+  addingToInquiry.value = true
   try {
-    await cartStore.addItem(props.product.id, 1)
-    ElMessage.success('已加入购物车')
+    await inquiryStore.addItem(props.product.id, 1)
+    ElMessage.success('已加入询价清单')
   } catch (e) {
     // Error handled by interceptor
   } finally {
-    addingToCart.value = false
+    addingToInquiry.value = false
   }
 }
 
-// Listen for compare updates from outside
-if (typeof window !== 'undefined') {
-  window.addEventListener('compare-updated', (e) => {
-    compareItems.value = e.detail
-  })
+function shareProduct() {
+  // Placeholder share function
+  const url = window.location.origin + `/product/${props.product.id}`
+  if (navigator.share) {
+    navigator.share({
+      title: props.product.name,
+      url: url
+    }).catch(() => {})
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      ElMessage.success('链接已复制到剪贴板')
+    }).catch(() => {
+      ElMessage.info(`商品链接: ${url}`)
+    })
+  }
 }
 </script>
 
@@ -285,6 +273,11 @@ if (typeof window !== 'undefined') {
   border-radius: 4px;
 }
 
+.card-unit {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
 .card-rating {
   margin-bottom: 8px;
 }
@@ -295,18 +288,18 @@ if (typeof window !== 'undefined') {
 
 .card-price-row {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 2px;
   margin-bottom: 12px;
 }
 
-.card-price {
+.card-wholesale-price {
   font-size: 20px;
   font-weight: 700;
   color: var(--primary-color);
 }
 
-.card-original-price {
+.card-retail-price {
   font-size: 13px;
   color: var(--text-tertiary);
   text-decoration: line-through;
@@ -315,6 +308,6 @@ if (typeof window !== 'undefined') {
 .card-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 }
 </style>
