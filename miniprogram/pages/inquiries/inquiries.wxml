@@ -9,7 +9,7 @@
   </view>
 
   <!-- 加载中 -->
-  <view wx:if="{{loading && inquiries.length === 0}}" class="loading-state">
+  <view wx:elif="{{loading && inquiries.length === 0}}" class="loading-state">
     <text>加载中...</text>
   </view>
 
